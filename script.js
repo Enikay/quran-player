@@ -172,12 +172,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 		audio.src = track.url;
 		audio.play();
 		
+		playerBar.style.display = 'grid';
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.playbackState = 'playing';
+		}
+		
 		btnDownload.href = track.url;
 		updatePlayerTitle();
 
 		document.querySelectorAll(".surah").forEach(div => div.classList.remove("playing"));
 		const activeDiv = document.querySelector(`.surah[data-index="${index}"]`);
 		if (activeDiv) activeDiv.classList.add("playing");
+		
 		updateMediaSession(
 			suwarData[currentLang][index],
 			currentLang === 'ar' ? activeReciter.name.ar : activeReciter.name.en
