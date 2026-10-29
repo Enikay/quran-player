@@ -1,0 +1,127 @@
+{
+	"suwar": {
+		"en": ["Al Fatihah", "Al Baqarah", "Ali `Imran", "An Nisa'", "Al Ma'idah", "Al An`am", "Al A`raf", "Al Anfal", "At Tawbah", "Yunus", "Hud", "Yusuf", "Ar Ra`d", "Ibrahim", "Al Hijr", "An Nahl", "Al Isra", "Al Kahf", "Maryam", "Ta-Ha", "Al Anbiya'", "Al Hajj", "Al Mu'minun", "An Nur", "Al Furqan", "Ash Shu`ara'", "An Naml", "Al Qasas", "Al `Ankabut", "Ar Rum", "Luqman", "As Sajdah", "Al Ahzab", "Saba'", "Fatir", "Ya Sin", "As Saffat", "Sad", "Az Zumar", "Ghafir", "Fussilat", "Ash Shura", "Az Zukhruf", "Ad Dukhan", "Al Jathiya", "Al Ahqaf", "Muhammad", "Al Fath", "Al Hujurat", "Qaf", "Az Zariyat", "At Tur", "An Najm", "Al Qamar", "Ar Rahman", "Al Waqi`ah", "Al Hadid", "Al Mujadilah", "Al Hashr", "Al Mumtahinah", "As Saff", "Al Jumu`ah", "Al Munafiqun", "At Taghabun", "At Talaq", "At Tahrim", "Al Mulk", "Al Qalam", "Al Haqqah", "Al Ma`arij", "Nuh", "Al Jinn", "Al Muzzammil", "Al Muddaththir", "Al Qiyamah", "Al Insan", "Al Mursalat", "An Naba'", "An Nazi`at", "`Abasa", "At Takwir", "Al Infitar", "Al Mutaffifin", "Al Inshiqaq", "Al Buruj", "At Tariq", "Al A`la", "Al Ghashiyah", "Al Fajr", "Al Balad", "Ash Shams", "Al Layl", "Ad Duha", "Ash Sharh", "At Tin", "Al `Alaq", "Al Qadr", "Al Bayyinah", "Az Zalzalah", "Al `Adiyat", "Al Qari`ah", "At Takathur", "Al `Asr", "Al Humazah", "Al Fil", "Quraysh", "Al Ma`un", "Al Kawthar", "Al Kafirun", "An Nasr", "Al Masad", "Al Ikhlas", "Al Falaq", "An Nas"],
+		"ar": ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"]
+	},
+	"reciters": {
+		"abdulbasit": {
+			"path": "https://achive.org/download/quran-abdulbasit",
+			"name": {
+				"en": "Abdulbasit Abdussamad",
+				"ar": "عبدالباسط عبد الصمد"
+			}
+		},
+		"juhany": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Al-Johany",
+			"name": {
+				"en": "Abdullah Al Juhany",
+				"ar": "عبدالله الجهني"
+			}
+		},
+		"al-musa": {
+			"path": "https://achive.org/download/al-musa",
+			"name": {
+				"en": "Abdullah Al Musa",
+				"ar": "عبدالله الموسى"
+			}
+		},
+		"sudais": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Alsdes",
+			"name": {
+				"en": "Abdurrahman As Sudais",
+				"ar": "عبدالرحمن السديس"
+			}
+		},
+		"shatri": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Shatri",
+			"name": {
+				"en": "Abu Bakr Ash Shatri",
+				"ar": "أبو بكر الشاطري"
+			}
+		},
+		"hudhaifi": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Ali-Alhuthaifi",
+			"name": {
+				"en": "Ali Al Hudhaifi",
+				"ar": "علي الحذيفي"
+			}
+		},
+		"turki": {
+			"path": "https://download.tvquran.com/download/recitations/373/287",
+			"name": {
+				"en": "Badr At Turki",
+				"ar": "بدر التركي"
+			}
+		},
+		"baleela": {
+			"path": "https://download.tvquran.com/download/recitations/220/173",
+			"name": {
+				"en": "Bandar Baleela",
+				"ar": "بندر بليلة"
+			}
+		},
+		"balushi": {
+			"path": "https://download.tvquran.com/download/recitations/183/216",
+			"name": {
+				"en": "Hazza Al Balushi",
+				"ar": "حزّاء البلوشي"
+			}
+		},
+		"abkar": {
+			"path": "https://achive.org/download/abkar",
+			"name": {
+				"en": "Idriss Abkar",
+				"ar": "إدريس عبكار"
+			}
+		},
+		"jalil": {
+			"path": "https://achive.org/download/jalil",
+			"name": {
+				"en": "Khalid Al Jalil",
+				"ar": "خالد الجليل"
+			}
+		},
+		"muayqli": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Maher",
+			"name": {
+				"en": "Mahir Al Muayqli",
+				"ar": "ماهر المعيقلي"
+			}
+		},
+		"afasy": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Alafasi",
+			"name": {
+				"en": "Mishary Al Afasy",
+				"ar": "مشاري العفاسي"
+			}
+		},
+		"qatami": {
+			"path": "https://download.tvquran.com/download/recitations/90/25",
+			"name": {
+				"en": "Nassir Al Qatami",
+				"ar": "ناصر القاطمي"
+			}
+		},
+		"khatib": {
+			"path": "https://achive.org/download/khatib",
+			"name": {
+				"en": "Said Al Khatib",
+				"ar": "سعيد الخطيب"
+			}
+		},
+		"shuraim": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Al-Shuraim",
+			"name": {
+				"en": "Saud Ash Shuraim",
+				"ar": "سعود الشريم"
+			}
+		},
+		"dossari": {
+			"path": "https://download.tvquran.com/download/TvQuran.com__Yasser",
+			"name": {
+				"en": "Yassir Ad Dossari",
+				"ar": "ياسر الدوسري"
+			}
+		}
+	}
+}

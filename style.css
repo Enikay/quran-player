@@ -1,0 +1,213 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	background: #121212;
+	color: #e0e0e0;
+	padding-bottom: 90px;
+	padding-top: 50px;
+}
+
+#topbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	background: #1a1a1a;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 1rem;
+	z-index: 1000;
+	border-bottom: 1px solid #333;
+}
+
+button {
+	background: #333;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+button:hover {
+	background: #444;
+}
+
+#sidebar {
+	position: fixed;
+	top: 50px;
+	bottom: 90px;
+	left: 0;
+	width: 300px;
+	background: #1e1e1e;
+	padding: 1rem;
+	overflow-y: auto;
+	border-right: 1px solid #333;
+	transform: translateX(-100%);
+	transition: transform 0.3s ease;
+	z-index: 900;
+}
+
+html[dir="rtl"] #sidebar {
+	left: auto;
+	right: 0;
+	transform: translateX(100%);
+	border-right: none;
+	border-left: 1px solid #333;
+}
+
+#sidebar.open, #sidebar.pinned {
+	transform: translateX(0);
+}
+
+#content {
+	padding: 1rem 2rem;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+li {
+	padding: 0.75rem;
+	cursor: pointer;
+	border-radius: 4px;
+	margin-bottom: 0.5rem;
+	background: #2a2a2a;
+}
+
+li:hover, li.active {
+	background: #3a3a3a;
+}
+
+.surah {
+	padding: 1rem;
+	border: 1px solid #333;
+	border-radius: 6px;
+	margin-bottom: 0.5rem;
+	background: #1e1e1e;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.surah:hover {
+	background: #2a2a2a;
+}
+
+.surah.unavailable {
+	opacity: 0.3;
+	pointer-events: none;
+}
+
+.surah.playing {
+	border-color: #1db954;
+	color: #1db954;
+}
+
+.hidden-audio {
+	display: none;
+}
+
+#player-bar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: auto;
+	background: #181818;
+	border-top: 1px solid #333;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	grid-template-areas:
+		"progress progress progress"
+		"info controls settings";
+	align-items: center;
+	padding: 0.5rem 1rem;
+	z-index: 1000;
+	gap: 0.5rem;
+}
+
+#player-progress {
+	grid-area: progress;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	gap: 1rem;
+}
+
+#player-info {
+	grid-area: info;
+}
+
+#player-controls {
+	grid-area: controls;
+	display: flex;
+	gap: 0.5rem;
+}
+
+#player-settings {
+	grid-area: settings;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	justify-content: flex-end;
+}
+
+#seek-bar {
+	flex: 1;
+	width: 100%;
+}
+
+#btn-download {
+	text-decoration: none;
+	background: #333;
+	padding: 0.5rem;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	#player-bar {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"progress"
+			"info"
+			"controls";
+		gap: 1rem;
+		padding: 1rem;
+		text-align: center;
+	}
+	
+	#player-controls {
+		justify-content: center;
+	}
+	
+	#player-settings {
+		display: none;
+	}
+	
+	body {
+		padding-bottom: 150px;
+	}
+}
+
+html[dir="rtl"] #sidebar.open, 
+html[dir="rtl"] #sidebar.pinned {
+	transform: translateX(0);
+}
+
+#reciters-list li.unavailable {
+	opacity: 0.3;
+	pointer-events: none;
+}

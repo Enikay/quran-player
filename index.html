@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Quran Player</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<header id="topbar">
+			<button id="burger-btn">☰</button>
+			<button id="lang-switch">🌐 EN / AR</button>
+		</header>
+		
+		<aside id="sidebar">
+			<h2>Récitateurs</h2>
+			<ul id="reciters-list"></ul>
+		</aside>
+		
+		<main id="content">
+			<h2 id="reciter-name">Sélectionne un récitateur</h2>
+			<div id="suwar-list"></div>
+		</main>
+		
+		<div id="player-bar">
+			<div id="player-info">
+				<span id="player-title">Aucune lecture</span>
+			</div>
+			<div id="player-controls">
+				<button id="btn-prev">⏮</button>
+				<button id="btn-rewind">⏪ 5s</button>
+				<button id="btn-play">▶</button>
+				<button id="btn-forward">⏩ 5s</button>
+				<button id="btn-next">⏭</button>
+				<button id="btn-repeat">🔁</button>
+			</div>
+			<div id="player-progress">
+				<span id="time-current">0:00</span>
+				<input type="range" id="seek-bar" value="0" step="0.1">
+				<span id="time-total">0:00</span>
+			</div>
+			<div id="player-settings">
+				🔊 <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1">
+				<select id="speed-select">
+					<option value="0.75">0.75x</option>
+					<option value="1" selected>1x</option>
+					<option value="1.25">1.25x</option>
+					<option value="1.5">1.5x</option>
+				</select>
+				<a id="btn-download" download>⬇️</a>
+			</div>
+			<audio id="global-audio"></audio>
+		</div>
+		
+		<script src="script.js"></script>
+	</body>
+</html>
