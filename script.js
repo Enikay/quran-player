@@ -216,11 +216,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		
 		let nextIndex = currentTrackIndex + 1;
 		if (nextIndex >= playlist.length) {
-			if (repeatMode === 1) {
-				nextIndex = 0;
-			} else {
-				return;
-			}
+			if (repeatMode !== 1) return;
+			nextIndex = 0;
 		}
 		playTrack(nextIndex);
 	});
