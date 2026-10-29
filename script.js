@@ -17,12 +17,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const reciterTitle = document.getElementById("reciter-name");
 
 	const audio = document.getElementById("global-audio");
+	const playerBar = document.getElementById('player-bar');
+	const btnRepeat = document.getElementById("btn-repeat");
 	const btnPlay = document.getElementById("btn-play");
 	const btnPrev = document.getElementById("btn-prev");
 	const btnNext = document.getElementById("btn-next");
 	const btnRewind = document.getElementById("btn-rewind");
 	const btnForward = document.getElementById("btn-forward");
-	const btnRepeat = document.getElementById("btn-repeat");
+	const btnStop = document.getElementById('btn-stop');
 	const seekBar = document.getElementById("seek-bar");
 	const volumeBar = document.getElementById("volume-bar");
 	const speedSelect = document.getElementById("speed-select");
@@ -142,6 +144,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 		btnForward.textContent = currentLang === 'ar' ? '5s ⏪' : '⏩ 5s';
 	}
 
+	function updateMediaSession(surahName, reciterName) {
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: `${surahName} - ${reciterName}`,
+				artist: 'Quran Player',
+				/*
+				artwork: [
+					// Suggestion : mets une icône ici pour éviter le carré gris vide de l'OS
+					{ src: '/path/to/icon-512.png', sizes: '512x512', type: 'image/png' }
+				]*/
+			});
+
+			navigator.mediaSession.setActionHandler('play', () => audio.play());
+			navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+			navigator.mediaSession.setActionHandler('previoustrack', () => playPrev()); // Remplace par ta fonction
+			navigator.mediaSession.setActionHandler('nexttrack', () => playNext()); // Remplace par ta fonction
+			
+			navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime -= 5; });
+			navigator.mediaSession.setActionHandler('seekforward', () => { audio.currentTime += 5; });
+		}
+	}
+
 	function playTrack(index) {
 		currentTrackIndex = index;
 		const track = playlist[index];
@@ -154,6 +178,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 		document.querySelectorAll(".surah").forEach(div => div.classList.remove("playing"));
 		const activeDiv = document.querySelector(`.surah[data-index="${index}"]`);
 		if (activeDiv) activeDiv.classList.add("playing");
+		updateMediaSession(
+			suwarData[currentLang][index],
+			currentLang === 'ar' ? activeReciter.name.ar : activeReciter.name.en
+		);
 	}
 
 	function updatePlayerTitle() {
@@ -164,6 +192,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 		const reciterName = currentLang === 'ar' ? activeReciter.name.ar : activeReciter.name.en;
 		playerTitle.textContent = `${number}. ${title} - ${reciterName}`;
 	}
+
+	function stopPlayer() {
+		audio.pause();
+		audio.currentTime = 0;
+		playerBar.style.display = 'none';
+		
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = null;
+			navigator.mediaSession.playbackState = 'none';
+		}
+	}
+
+	btnStop.addEventListener('click', stopPlayer);
 
 	btnPlay.addEventListener("click", () => {
 		if (!audio.src) return;
@@ -207,19 +248,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 	
 	speedSelect.addEventListener("change", (e) => audio.playbackRate = e.target.value);
 
+	function playNext() {
+		let nextIndex = currentTrackIndex + 1;
+		if (nextIndex >= playlist.length) {
+			nextIndex = 0;
+		}
+		playTrack(nextIndex);
+	}
+
+	function playPrev() {
+		let prevIndex = currentTrackIndex - 1;
+		if (prevIndex < 0) {
+			prevIndex = playlist.length - 1;
+		}
+		playTrack(prevIndex);
+	}
+
 	audio.addEventListener("ended", () => {
 		if (repeatMode === 2) {
 			audio.currentTime = 0;
 			audio.play();
 			return;
 		}
-		
-		let nextIndex = currentTrackIndex + 1;
-		if (nextIndex >= playlist.length) {
-			if (repeatMode !== 1) return;
-			nextIndex = 0;
+
+		if (repeatMode === 0 && currentTrackIndex === playlist.length - 1) {
+			stopPlayer();
+			return;
 		}
-		playTrack(nextIndex);
+		
+		playNext();
 	});
 
 	function formatTime(seconds) {

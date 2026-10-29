@@ -127,7 +127,7 @@ li:hover, li.active {
 	height: auto;
 	background: #181818;
 	border-top: 1px solid #333;
-	display: grid;
+	display: none;
 	grid-template-columns: 1fr auto 1fr;
 	grid-template-areas:
 		"progress progress progress"
