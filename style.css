@@ -1,3 +1,6 @@
+/* =========================================
+   1. BASE & GLOBALS
+   ========================================= */
 * {
 	box-sizing: border-box;
 }
@@ -7,23 +10,8 @@ body {
 	font-family: system-ui, sans-serif;
 	background: #121212;
 	color: #e0e0e0;
-	padding-bottom: 90px;
 	padding-top: 50px;
-}
-
-#topbar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 50px;
-	background: #1a1a1a;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 1rem;
-	z-index: 1000;
-	border-bottom: 1px solid #333;
+	padding-bottom: 90px;
 }
 
 button {
@@ -39,6 +27,33 @@ button:hover {
 	background: #444;
 }
 
+/* =========================================
+   2. LAYOUT: TOPBAR & CONTENT
+   ========================================= */
+#topbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	background: #1a1a1a;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 1rem;
+	z-index: 1000;
+	border-bottom: 1px solid #333;
+}
+
+#content {
+	padding: 1rem 2rem;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+/* =========================================
+   3. SIDEBAR & NAVIGATION
+   ========================================= */
 #sidebar {
 	position: fixed;
 	top: 50px;
@@ -54,6 +69,12 @@ button:hover {
 	z-index: 900;
 }
 
+#sidebar.open, 
+#sidebar.pinned {
+	transform: translateX(0);
+}
+
+/* RTL Support for Sidebar */
 html[dir="rtl"] #sidebar {
 	left: auto;
 	right: 0;
@@ -62,16 +83,14 @@ html[dir="rtl"] #sidebar {
 	border-left: 1px solid #333;
 }
 
-#sidebar.open, #sidebar.pinned {
+html[dir="rtl"] #sidebar.open, 
+html[dir="rtl"] #sidebar.pinned {
 	transform: translateX(0);
 }
 
-#content {
-	padding: 1rem 2rem;
-	max-width: 800px;
-	margin: 0 auto;
-}
-
+/* =========================================
+   4. LISTS & ITEMS (RECITERS & SUWAR)
+   ========================================= */
 ul {
 	list-style: none;
 	padding: 0;
@@ -85,7 +104,8 @@ li {
 	background: #2a2a2a;
 }
 
-li:hover, li.active {
+li:hover, 
+li.active {
 	background: #3a3a3a;
 }
 
@@ -105,20 +125,20 @@ li:hover, li.active {
 	background: #2a2a2a;
 }
 
-.surah.unavailable {
-	opacity: 0.3;
-	pointer-events: none;
-}
-
 .surah.playing {
 	border-color: #1db954;
 	color: #1db954;
 }
 
-.hidden-audio {
-	display: none;
+.surah-duration {
+	margin-inline-start: auto;
+	opacity: 0.7;
+	font-size: 0.9em;
 }
 
+/* =========================================
+   5. PLAYER BAR (GRID)
+   ========================================= */
 #player-bar {
 	position: fixed;
 	bottom: 0;
@@ -146,6 +166,11 @@ li:hover, li.active {
 	gap: 1rem;
 }
 
+#seek-bar {
+	flex: 1;
+	width: 100%;
+}
+
 #player-info {
 	grid-area: info;
 }
@@ -164,11 +189,6 @@ li:hover, li.active {
 	justify-content: flex-end;
 }
 
-#seek-bar {
-	flex: 1;
-	width: 100%;
-}
-
 #btn-download {
 	text-decoration: none;
 	background: #333;
@@ -177,7 +197,26 @@ li:hover, li.active {
 	cursor: pointer;
 }
 
+/* =========================================
+   6. UTILITIES & STATES
+   ========================================= */
+.hidden-audio {
+	display: none;
+}
+
+.unavailable {
+	opacity: 0.3;
+	pointer-events: none;
+}
+
+/* =========================================
+   7. MEDIA QUERIES
+   ========================================= */
 @media (max-width: 768px) {
+	body {
+		padding-bottom: 150px;
+	}
+
 	#player-bar {
 		grid-template-columns: 1fr;
 		grid-template-areas:
@@ -196,18 +235,4 @@ li:hover, li.active {
 	#player-settings {
 		display: none;
 	}
-	
-	body {
-		padding-bottom: 150px;
-	}
-}
-
-html[dir="rtl"] #sidebar.open, 
-html[dir="rtl"] #sidebar.pinned {
-	transform: translateX(0);
-}
-
-#reciters-list li.unavailable {
-	opacity: 0.3;
-	pointer-events: none;
 }
