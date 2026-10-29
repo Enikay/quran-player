@@ -5,7 +5,7 @@
 	},
 	"reciters": {
 		"abdulbasit": {
-			"path": "https://achive.org/download/quran-abdulbasit",
+			"path": "https://archive.org/download/quran-abdulbasit-hq",
 			"name": {
 				"en": "Abdulbasit Abdussamad",
 				"ar": "عبدالباسط عبد الصمد"
@@ -19,7 +19,7 @@
 			}
 		},
 		"al-musa": {
-			"path": "https://achive.org/download/al-musa",
+			"path": "https://archive.org/download/quran-al-musa-hq",
 			"name": {
 				"en": "Abdullah Al Musa",
 				"ar": "عبدالله الموسى"
@@ -68,14 +68,14 @@
 			}
 		},
 		"abkar": {
-			"path": "https://achive.org/download/quran-idriss-abkar",
+			"path": "https://archive.org/download/quran-abkar-hq",
 			"name": {
 				"en": "Idriss Abkar",
 				"ar": "إدريس عبكار"
 			}
 		},
 		"jalil": {
-			"path": "https://achive.org/download/quran-jalil",
+			"path": "https://archive.org/download/quran-jalil-hq",
 			"name": {
 				"en": "Khalid Al Jalil",
 				"ar": "خالد الجليل"
@@ -103,7 +103,7 @@
 			}
 		},
 		"khatib": {
-			"path": "https://achive.org/download/quran-khatib",
+			"path": "https://archive.org/download/quran-khatib-hq",
 			"name": {
 				"en": "Said Al Khatib",
 				"ar": "سعيد الخطيب"
