@@ -68,14 +68,14 @@
 			}
 		},
 		"abkar": {
-			"path": "https://achive.org/download/abkar",
+			"path": "https://achive.org/download/quran-idriss-abkar",
 			"name": {
 				"en": "Idriss Abkar",
 				"ar": "إدريس عبكار"
 			}
 		},
 		"jalil": {
-			"path": "https://achive.org/download/jalil",
+			"path": "https://achive.org/download/quran-jalil",
 			"name": {
 				"en": "Khalid Al Jalil",
 				"ar": "خالد الجليل"
@@ -103,7 +103,7 @@
 			}
 		},
 		"khatib": {
-			"path": "https://achive.org/download/khatib",
+			"path": "https://achive.org/download/quran-khatib",
 			"name": {
 				"en": "Said Al Khatib",
 				"ar": "سعيد الخطيب"
