@@ -12,9 +12,15 @@ class AudioEngine {
 	}
 
 	setupListeners() {
-		this.audio.addEventListener("play", () => this.app.ui.updatePlayState(true));
-		this.audio.addEventListener("pause", () => this.app.ui.updatePlayState(false));
-		this.audio.addEventListener("timeupdate", () => this.app.ui.updateProgress(this.audio.currentTime, this.audio.duration));
+		this.audio.addEventListener("play", () => {
+			this.app.ui.updatePlayState(true);
+			this.startProgressLoop();
+		});
+		
+		this.audio.addEventListener("pause", () => {
+			this.app.ui.updatePlayState(false);
+			this.stopProgressLoop();
+		});
 		
 		this.audio.addEventListener("ended", () => {
 			if (this.repeatMode === 2) {
@@ -28,6 +34,18 @@ class AudioEngine {
 			}
 			this.playNext();
 		});
+	}
+
+	startProgressLoop() {
+		const loop = () => {
+			this.app.ui.updateProgress(this.audio.currentTime, this.audio.duration);
+			this.animationFrame = requestAnimationFrame(loop);
+		};
+		this.animationFrame = requestAnimationFrame(loop);
+	}
+
+	stopProgressLoop() {
+		cancelAnimationFrame(this.animationFrame);
 	}
 
 	play(index, reciter = this.reciter, playlist = this.playlist) {
@@ -177,13 +195,33 @@ class UIController {
 		});
 
 		// Inputs
-		this.seekBar.addEventListener("input", (e) => {
-			const duration = this.app.audio.audio.duration;
-			if (!isNaN(duration)) this.app.audio.seek((e.target.value / 100) * duration);
-		});
-		this.volumeBar.addEventListener("input", (e) => this.app.audio.setVolume(e.target.value));
-		this.speedSelect.addEventListener("change", (e) => this.app.audio.setSpeed(e.target.value));
-	}
+		this.seekBar.addEventListener("mousedown", () => this.isDragging = true);
+        this.seekBar.addEventListener("touchstart", () => this.isDragging = true, { passive: true });
+        
+        this.seekBar.addEventListener("mouseup", () => this.isDragging = false);
+        this.seekBar.addEventListener("touchend", () => this.isDragging = false);
+
+        this.seekBar.addEventListener("input", (e) => {
+            const duration = this.app.audio.audio.duration;
+            if (!isNaN(duration)) {
+                this.app.audio.seek((e.target.value / 100) * duration);
+                this.timeCurrent.textContent = this.formatTime(this.app.audio.audio.currentTime);
+            }
+        });
+
+        this.volumeBar.addEventListener("input", (e) => this.app.audio.setVolume(e.target.value));
+        this.speedSelect.addEventListener("change", (e) => this.app.audio.setSpeed(e.target.value));
+    }
+
+    updateProgress(current, duration) {
+        if (isNaN(duration) || this.isDragging) return;
+        
+        this.seekBar.value = (current / duration) * 100;
+        this.timeCurrent.textContent = this.formatTime(current);
+        this.timeTotal.textContent = this.showRemainingTime 
+            ? "-" + this.formatTime(duration - current) 
+            : this.formatTime(duration);
+    }
 
 	renderReciters(recitersData) {
 		this.recitersList.innerHTML = "";
