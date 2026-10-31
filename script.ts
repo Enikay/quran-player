@@ -441,11 +441,14 @@ class UIController {
     }
 
     showPlayer(): void { 
-        this.playerBar.style.display = 'grid'; 
+        this.playerBar.style.display = 'grid';
+        const playerHeight = this.playerBar.offsetHeight;
+        document.documentElement.style.setProperty('--player-height', `${playerHeight}px`);
     }
     
     hidePlayer(): void { 
-        this.playerBar.style.display = 'none'; 
+        this.playerBar.style.display = 'none';
+        document.documentElement.style.setProperty('--player-height', `0px`);
     }
     
     updateDownloadLink(url: string): void { 
