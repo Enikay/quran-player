@@ -460,8 +460,10 @@ class UIController {
 
 	showPlayer(): void { 
 		this.playerBar.style.display = 'grid';
-		const playerHeight = this.playerBar.offsetHeight;
-		document.documentElement.style.setProperty('--player-height', `${playerHeight}px`);
+		requestAnimationFrame(() => {
+			const playerHeight = this.playerBar.offsetHeight;
+			document.documentElement.style.setProperty('--player-height', `${playerHeight}px`);
+		});
 	}
 	
 	hidePlayer(): void { 
