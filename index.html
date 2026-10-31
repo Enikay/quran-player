@@ -9,8 +9,12 @@
 	</head>
 	<body>
 		<header id="topbar">
-			<button class="icon-btn" id="burger-btn"><img src="icons/menu.svg" alt="Menu"></button>
-			<button class="icon-btn" id="lang-switch"><img src="icons/language.svg" alt="Lang"></button>
+			<button class="icon-btn" id="burger-btn" title="Reciters">
+				<img src="icons/menu.svg" alt="Menu">
+			</button>
+			<button class="icon-btn" id="lang-switch" title="عربية">
+				<img src="icons/language.svg" alt="Lang">
+			</button>
 		</header>
 		
 		<aside id="sidebar">
@@ -35,19 +39,37 @@
 				<span id="player-title">No current playback</span>
 			</div>
 			<div id="player-controls">
-				<button class="icon-btn" id="btn-repeat"><img src="icons/repeat_off.svg" alt="Repeat"></button>
-				<button class="icon-btn" id="btn-prev"><img src="icons/skip_left.svg" alt="Previous"></button>
-				<button class="icon-btn" id="btn-rewind"><img src="icons/seek_left.svg" alt="Rewind"></button>
-				<button class="icon-btn" id="btn-play"><img src="icons/play.svg" alt="Play"></button>
-				<button class="icon-btn" id="btn-forward"><img src="icons/seek_right.svg" alt="Forward"></button>
-				<button class="icon-btn" id="btn-next"><img src="icons/skip_right.svg" alt="Next"></button>
-				<button class="icon-btn" id="btn-stop"><img src="icons/stop.svg" alt="Stop"></button>
+				<button class="icon-btn" id="btn-repeat" title="Repeat all">
+					<img src="icons/repeat_off.svg" alt="Repeat">
+				</button>
+				<button class="icon-btn" id="btn-prev" title="Previous">
+					<img src="icons/skip_left.svg" alt="Previous">
+				</button>
+				<button class="icon-btn" id="btn-rewind" title="Rewind">
+					<img src="icons/seek_left.svg" alt="Rewind">
+				</button>
+				<button class="icon-btn" id="btn-play" title="Play">
+					<img src="icons/play.svg" alt="Play">
+				</button>
+				<button class="icon-btn" id="btn-forward" title="Forward">
+					<img src="icons/seek_right.svg" alt="Forward">
+				</button>
+				<button class="icon-btn" id="btn-next" title="Next">
+					<img src="icons/skip_right.svg" alt="Next">
+				</button>
+				<button class="icon-btn" id="btn-stop" title="Stop">
+					<img src="icons/stop.svg" alt="Stop">
+				</button>
 			</div>
 			<div id="player-settings">
-				<button id="btn-mute" class="icon-btn"><img src="icons/volume_up.svg" alt="Mute"></button>
+				<button id="btn-mute" class="icon-btn" title="Mute">
+					<img src="icons/volume_up.svg" alt="Mute">
+				</button>
 				<input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1">
-				<button class="icon-btn" id="btn-speed"><img src="icons/speed_1x.svg" alt="Speed 1x"></button>
-				<a id="btn-download" class="icon-btn" target="_blank" rel="noopener noreferrer" download>
+				<button class="icon-btn" id="btn-speed" title="Speed 1x">
+					<img src="icons/speed_1x.svg" alt="Speed 1x">
+				</button>
+				<a id="btn-download" class="icon-btn" title="Download" target="_blank" rel="noopener noreferrer" download>
 					<img src="icons/download.svg" alt="Download">
 				</a>
 			</div>

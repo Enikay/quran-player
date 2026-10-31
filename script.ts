@@ -272,6 +272,7 @@ class UIController {
 	btnMute!: HTMLButtonElement;
 
 	readonly REPEAT_ICONS = ["repeat_off.svg", "repeat_all.svg", "repeat_one.svg"];
+	readonly REPEAT_TITLES = ["Repeat all", "Repeat current track", "Disable repeat"];
 
 	constructor(app: QuranApp) {
 		this.app = app;
@@ -327,6 +328,7 @@ class UIController {
 			const mode = this.app.audio.toggleRepeat();
 			const img = this.btnRepeat.querySelector("img") as HTMLImageElement;
 			if (img) img.src = `icons/${this.REPEAT_ICONS[mode]}`;
+			this.btnRepeat.title = this.REPEAT_TITLES[mode]!;
 		});
 
 		this.timeTotal.addEventListener("click", () => {
@@ -501,6 +503,10 @@ class UIController {
 
 		const imgForward = this.btnForward.querySelector("img") as HTMLImageElement;
 		if (imgForward) imgForward.src = isAr ? "icons/seek_left.svg" : "icons/seek_right.svg";
+
+		this.langBtn.title = isAr ? "English" : "عربية";
+		this.btnRewind.title = `Rewind ${SEEK_STEP}s`;
+		this.btnForward.title = `Forward ${SEEK_STEP}s`;
 	}
 
 	updatePlayerTitle(): void {
@@ -521,6 +527,7 @@ class UIController {
 	updatePlayState(isPlaying: boolean): void {
 		const img = this.btnPlay.querySelector("img") as HTMLImageElement;
 		if (img) img.src = isPlaying ? "icons/pause.svg" : "icons/play.svg";
+		this.btnPlay.title = isPlaying ? "Pause" : "Play";
 	}
 
 	updateProgress(current: number, duration: number): void {
@@ -553,6 +560,8 @@ class UIController {
 	updateVolumeIcon(volume: number, isMuted: boolean): void {
 		const img = this.btnMute.querySelector("img") as HTMLImageElement;
 		if (!img) return;
+
+		this.btnMute.title = isMuted ? "Unmute" : "Mute";
 
 		if (isMuted) {
 			img.src = "icons/mute.svg";
