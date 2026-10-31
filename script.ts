@@ -15,6 +15,7 @@ interface Reciter {
 interface Track {
 	index: number;
 	url: string;
+	isUnavailable?: boolean;
 }
 
 interface JsonData {
@@ -33,7 +34,7 @@ class AudioEngine {
 	animationFrame: number = 0;
 	speedIndex: number = 2;
 
-    readonly SPEEDS: number[] = [0.5, 0.7, 1, 1.2, 1.5, 1.7, 2];
+	readonly SPEEDS: number[] = [0.5, 0.7, 1, 1.2, 1.5, 1.7, 2];
 
 	constructor(app: QuranApp) {
 		this.app = app;
@@ -69,6 +70,18 @@ class AudioEngine {
 		this.audio.addEventListener("loadedmetadata", () => this.updateMediaSessionPosition());
 		this.audio.addEventListener("seeked", () => this.updateMediaSessionPosition());
 		this.audio.addEventListener("ratechange", () => this.updateMediaSessionPosition());
+
+		this.audio.addEventListener("error", () => {
+			const currentTrack = this.playlist[this.currentIndex];
+			if (this.currentIndex > -1 && currentTrack) {
+				currentTrack.isUnavailable = true;
+				
+				const div = document.querySelector(`.surah[data-index="${this.currentIndex}"]`);
+				if (div) div.classList.add("unavailable");
+				
+				this.playNext();
+			}
+		});
 	}
 
 	startProgressLoop(): void {
@@ -117,15 +130,34 @@ class AudioEngine {
 
 	playNext(): void {
 		if (!this.playlist.length) return;
-		const nextIndex = (this.currentIndex + 1) % this.playlist.length;
-		this.play(nextIndex);
+		
+		let attempts = 0;
+		let nextIndex = this.currentIndex;
+		
+		do {
+			nextIndex = (nextIndex + 1) % this.playlist.length;
+			attempts++;
+		} while (this.playlist[nextIndex]?.isUnavailable && attempts < this.playlist.length);
+		
+		if (attempts < this.playlist.length) {
+			this.play(nextIndex);
+		}
 	}
 
 	playPrev(): void {
 		if (!this.playlist.length) return;
-		let prevIndex = this.currentIndex - 1;
-		if (prevIndex < 0) prevIndex = this.playlist.length - 1;
-		this.play(prevIndex);
+		
+		let attempts = 0;
+		let prevIndex = this.currentIndex;
+		
+		do {
+			prevIndex = prevIndex - 1 < 0 ? this.playlist.length - 1 : prevIndex - 1;
+			attempts++;
+		} while (this.playlist[prevIndex]?.isUnavailable && attempts < this.playlist.length);
+		
+		if (attempts < this.playlist.length) {
+			this.play(prevIndex);
+		}
 	}
 
 	seek(seconds: number): void {
@@ -162,12 +194,12 @@ class AudioEngine {
 		this.repeatMode = (this.repeatMode + 1) % 3;
 		return this.repeatMode;
 	}
-    
-    toggleSpeed(): number {
-        this.speedIndex = (this.speedIndex + 1) % this.SPEEDS.length;
-        this.audio.playbackRate = this.SPEEDS[this.speedIndex]!;
-        return this.audio.playbackRate;
-    }
+	
+	toggleSpeed(): number {
+		this.speedIndex = (this.speedIndex + 1) % this.SPEEDS.length;
+		this.audio.playbackRate = this.SPEEDS[this.speedIndex]!;
+		return this.audio.playbackRate;
+	}
 
 	updateMediaSessionPosition(): void {
 		if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
@@ -405,7 +437,10 @@ class UIController {
 				durationSpan.textContent = this.formatTime(hiddenAudio.duration);
 			});
 			
-			hiddenAudio.onerror = () => div.classList.add("unavailable");
+			hiddenAudio.onerror = () => {
+				div.classList.add("unavailable");
+				track.isUnavailable = true;
+			}
 
 			div.append(idSpan, nameSpan, statusSpan, durationSpan, hiddenAudio);
 			
@@ -421,7 +456,7 @@ class UIController {
 
 	updateTexts(): void {
 		const isAr = this.app.lang === 'ar';
-        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+		document.documentElement.dir = isAr ? 'rtl' : 'ltr';
 
 		if (this.app.activeReciter) {
 			this.reciterTitle.textContent = this.app.activeReciter.name[this.app.lang];
@@ -456,16 +491,16 @@ class UIController {
 		this.updatePlayerTitle();
 
 		const imgPrev = this.btnPrev.querySelector("img") as HTMLImageElement;
-        if (imgPrev) imgPrev.src = isAr ? "icons/skip_right.svg" : "icons/skip_left.svg";
+		if (imgPrev) imgPrev.src = isAr ? "icons/skip_right.svg" : "icons/skip_left.svg";
 
-        const imgNext = this.btnNext.querySelector("img") as HTMLImageElement;
-        if (imgNext) imgNext.src = isAr ? "icons/skip_left.svg" : "icons/skip_right.svg";
+		const imgNext = this.btnNext.querySelector("img") as HTMLImageElement;
+		if (imgNext) imgNext.src = isAr ? "icons/skip_left.svg" : "icons/skip_right.svg";
 
-        const imgRewind = this.btnRewind.querySelector("img") as HTMLImageElement;
-        if (imgRewind) imgRewind.src = isAr ? "icons/seek_right.svg" : "icons/seek_left.svg";
+		const imgRewind = this.btnRewind.querySelector("img") as HTMLImageElement;
+		if (imgRewind) imgRewind.src = isAr ? "icons/seek_right.svg" : "icons/seek_left.svg";
 
-        const imgForward = this.btnForward.querySelector("img") as HTMLImageElement;
-        if (imgForward) imgForward.src = isAr ? "icons/seek_left.svg" : "icons/seek_right.svg";
+		const imgForward = this.btnForward.querySelector("img") as HTMLImageElement;
+		if (imgForward) imgForward.src = isAr ? "icons/seek_left.svg" : "icons/seek_right.svg";
 	}
 
 	updatePlayerTitle(): void {
