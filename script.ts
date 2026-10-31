@@ -41,6 +41,7 @@ class AudioEngine {
         this.audio.addEventListener("play", () => {
             this.app.ui.updatePlayState(true);
             this.startProgressLoop();
+            this.updateMediaSessionPosition();
         });
         
         this.audio.addEventListener("pause", () => {
@@ -60,6 +61,10 @@ class AudioEngine {
             }
             this.playNext();
         });
+
+        this.audio.addEventListener("loadedmetadata", () => this.updateMediaSessionPosition());
+        this.audio.addEventListener("seeked", () => this.updateMediaSessionPosition());
+        this.audio.addEventListener("ratechange", () => this.updateMediaSessionPosition());
     }
 
     startProgressLoop(): void {
@@ -146,6 +151,18 @@ class AudioEngine {
         return this.repeatMode;
     }
 
+    updateMediaSessionPosition(): void {
+        if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+            if (!isNaN(this.audio.duration) && this.audio.duration > 0) {
+                navigator.mediaSession.setPositionState({
+                    duration: this.audio.duration,
+                    playbackRate: this.audio.playbackRate,
+                    position: Math.min(this.audio.currentTime, this.audio.duration)
+                });
+            }
+        }
+    }
+
     updateMediaSession(): void {
         if (!('mediaSession' in navigator) || !this.reciter) return;
 
@@ -163,8 +180,13 @@ class AudioEngine {
         navigator.mediaSession.setActionHandler('pause', () => this.audio.pause());
         navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrev());
         navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext());
-        navigator.mediaSession.setActionHandler('seekbackward', () => this.seekRelative(-5));
-        navigator.mediaSession.setActionHandler('seekforward', () => this.seekRelative(5));
+        //navigator.mediaSession.setActionHandler('seekbackward', () => this.seekRelative(-5));
+        //navigator.mediaSession.setActionHandler('seekforward', () => this.seekRelative(5));
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (details.seekTime !== undefined) {
+                this.seek(details.seekTime);
+            }
+        });
     }
 }
 
