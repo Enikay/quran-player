@@ -1,5 +1,6 @@
 // === CONTRATS DE DONNÉES ===
 type Lang = 'en' | 'ar';
+const SEEK_STEP = 5;
 
 interface ReciterName {
     en: string;
@@ -180,8 +181,8 @@ class AudioEngine {
         navigator.mediaSession.setActionHandler('pause', () => this.audio.pause());
         navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrev());
         navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext());
-        //navigator.mediaSession.setActionHandler('seekbackward', () => this.seekRelative(-5));
-        //navigator.mediaSession.setActionHandler('seekforward', () => this.seekRelative(5));
+        //navigator.mediaSession.setActionHandler('seekbackward', () => this.seekRelative(-SEEK_STEP));
+        //navigator.mediaSession.setActionHandler('seekforward', () => this.seekRelative(SEEK_STEP));
         navigator.mediaSession.setActionHandler('seekto', (details) => {
             if (details.seekTime !== undefined) {
                 this.seek(details.seekTime);
@@ -266,8 +267,8 @@ class UIController {
         this.btnStop.addEventListener("click", () => this.app.audio.stop());
         this.btnPrev.addEventListener("click", () => this.app.audio.playPrev());
         this.btnNext.addEventListener("click", () => this.app.audio.playNext());
-        this.btnRewind.addEventListener("click", () => this.app.audio.seekRelative(-5));
-        this.btnForward.addEventListener("click", () => this.app.audio.seekRelative(5));
+        this.btnRewind.addEventListener("click", () => this.app.audio.seekRelative(-SEEK_STEP));
+        this.btnForward.addEventListener("click", () => this.app.audio.seekRelative(SEEK_STEP));
         
         this.btnRepeat.addEventListener("click", () => {
             const mode = this.app.audio.toggleRepeat();
@@ -407,8 +408,8 @@ class UIController {
 
         this.btnPrev.textContent = this.app.lang === 'ar' ? '⏭' : '⏮';
         this.btnNext.textContent = this.app.lang === 'ar' ? '⏮' : '⏭';
-        this.btnRewind.textContent = this.app.lang === 'ar' ? '5s ⏩' : '⏪ 5s';
-        this.btnForward.textContent = this.app.lang === 'ar' ? '5s ⏪' : '⏩ 5s';
+        this.btnRewind.textContent = this.app.lang === 'ar' ? `${SEEK_STEP}s ⏩` : `⏪ ${SEEK_STEP}s`;
+        this.btnForward.textContent = this.app.lang === 'ar' ? `${SEEK_STEP}s ⏪` : `⏩ ${SEEK_STEP}s`;
     }
 
     updatePlayerTitle(): void {
