@@ -31,6 +31,9 @@ class AudioEngine {
 	currentIndex: number = -1;
 	repeatMode: number = 0; // 0: Off, 1: All, 2: One
 	animationFrame: number = 0;
+	speedIndex: number = 2;
+
+    readonly SPEEDS: number[] = [0.5, 0.7, 1, 1.2, 1.5, 1.7, 2];
 
 	constructor(app: QuranApp) {
 		this.app = app;
@@ -136,7 +139,15 @@ class AudioEngine {
 	}
 
 	setVolume(value: number): void { 
-		this.audio.volume = value; 
+		this.audio.volume = value;
+		if (this.audio.muted && value > 0) {
+			this.audio.muted = false;
+		}
+	}
+
+	toggleMute(): boolean {
+		this.audio.muted = !this.audio.muted;
+		return this.audio.muted;
 	}
 	
 	setSpeed(value: number): void { 
@@ -151,6 +162,12 @@ class AudioEngine {
 		this.repeatMode = (this.repeatMode + 1) % 3;
 		return this.repeatMode;
 	}
+    
+    toggleSpeed(): number {
+        this.speedIndex = (this.speedIndex + 1) % this.SPEEDS.length;
+        this.audio.playbackRate = this.SPEEDS[this.speedIndex]!;
+        return this.audio.playbackRate;
+    }
 
 	updateMediaSessionPosition(): void {
 		if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
@@ -215,11 +232,14 @@ class UIController {
 	btnStop!: HTMLButtonElement;
 	seekBar!: HTMLInputElement;
 	volumeBar!: HTMLInputElement;
-	speedSelect!: HTMLSelectElement;
+	btnSpeed!: HTMLButtonElement;
 	timeCurrent!: HTMLSpanElement;
 	timeTotal!: HTMLSpanElement;
 	playerTitle!: HTMLSpanElement;
 	btnDownload!: HTMLAnchorElement;
+	btnMute!: HTMLButtonElement;
+
+	readonly REPEAT_ICONS = ["repeat_off.svg", "repeat_all.svg", "repeat_one.svg"];
 
 	constructor(app: QuranApp) {
 		this.app = app;
@@ -245,11 +265,12 @@ class UIController {
 		this.btnStop = document.getElementById('btn-stop') as HTMLButtonElement;
 		this.seekBar = document.getElementById("seek-bar") as HTMLInputElement;
 		this.volumeBar = document.getElementById("volume-bar") as HTMLInputElement;
-		this.speedSelect = document.getElementById("speed-select") as HTMLSelectElement;
+		this.btnSpeed = document.getElementById("btn-speed") as HTMLButtonElement;
 		this.timeCurrent = document.getElementById("time-current") as HTMLSpanElement;
 		this.timeTotal = document.getElementById("time-total") as HTMLSpanElement;
 		this.playerTitle = document.getElementById("player-title") as HTMLSpanElement;
 		this.btnDownload = document.getElementById("btn-download") as HTMLAnchorElement;
+		this.btnMute = document.getElementById("btn-mute") as HTMLButtonElement;
 	}
 
 	setupEvents(): void {
@@ -272,8 +293,8 @@ class UIController {
 		
 		this.btnRepeat.addEventListener("click", () => {
 			const mode = this.app.audio.toggleRepeat();
-			const icons = ["🔁", "🔁 (All)", "🔂 (1)"];
-			this.btnRepeat.textContent = icons[mode] || "";
+			const img = this.btnRepeat.querySelector("img") as HTMLImageElement;
+			if (img) img.src = `icons/${this.REPEAT_ICONS[mode]}`;
 		});
 
 		this.timeTotal.addEventListener("click", () => {
@@ -295,14 +316,24 @@ class UIController {
 			}
 		});
 
-		this.volumeBar.addEventListener("input", (e: Event) => {
-			const target = e.target as HTMLInputElement;
-			this.app.audio.setVolume(parseFloat(target.value));
+		this.btnMute.addEventListener("click", () => {
+			const isMuted = this.app.audio.toggleMute();
+			this.updateVolumeIcon(this.app.audio.audio.volume, isMuted);
 		});
 
-		this.speedSelect.addEventListener("change", (e: Event) => {
-			const target = e.target as HTMLSelectElement;
-			this.app.audio.setSpeed(parseFloat(target.value));
+		this.volumeBar.addEventListener("input", (e: Event) => {
+			const target = e.target as HTMLInputElement;
+			const vol = parseFloat(target.value);
+			this.app.audio.setVolume(vol);
+			this.updateVolumeIcon(vol, this.app.audio.audio.muted);
+		});
+
+		this.btnSpeed.addEventListener("click", () => {
+			const newSpeed = this.app.audio.toggleSpeed();
+			const speedStr = newSpeed.toString().replace('.', '_') + "x";
+			
+			const img = this.btnSpeed.querySelector("img") as HTMLImageElement;
+			if (img) img.src = `icons/speed_${speedStr}.svg`;
 		});
 
 		document.addEventListener("click", (e: Event) => {
@@ -389,7 +420,8 @@ class UIController {
 	}
 
 	updateTexts(): void {
-		document.documentElement.dir = this.app.lang === 'ar' ? 'rtl' : 'ltr';
+		const isAr = this.app.lang === 'ar';
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
 
 		if (this.app.activeReciter) {
 			this.reciterTitle.textContent = this.app.activeReciter.name[this.app.lang];
@@ -423,10 +455,17 @@ class UIController {
 
 		this.updatePlayerTitle();
 
-		this.btnPrev.textContent = this.app.lang === 'ar' ? '⏭' : '⏮';
-		this.btnNext.textContent = this.app.lang === 'ar' ? '⏮' : '⏭';
-		this.btnRewind.textContent = this.app.lang === 'ar' ? `${SEEK_STEP}s ⏩` : `⏪ ${SEEK_STEP}s`;
-		this.btnForward.textContent = this.app.lang === 'ar' ? `${SEEK_STEP}s ⏪` : `⏩ ${SEEK_STEP}s`;
+		const imgPrev = this.btnPrev.querySelector("img") as HTMLImageElement;
+        if (imgPrev) imgPrev.src = isAr ? "icons/skip_right.svg" : "icons/skip_left.svg";
+
+        const imgNext = this.btnNext.querySelector("img") as HTMLImageElement;
+        if (imgNext) imgNext.src = isAr ? "icons/skip_left.svg" : "icons/skip_right.svg";
+
+        const imgRewind = this.btnRewind.querySelector("img") as HTMLImageElement;
+        if (imgRewind) imgRewind.src = isAr ? "icons/seek_right.svg" : "icons/seek_left.svg";
+
+        const imgForward = this.btnForward.querySelector("img") as HTMLImageElement;
+        if (imgForward) imgForward.src = isAr ? "icons/seek_left.svg" : "icons/seek_right.svg";
 	}
 
 	updatePlayerTitle(): void {
@@ -445,7 +484,8 @@ class UIController {
 	}
 
 	updatePlayState(isPlaying: boolean): void {
-		this.btnPlay.textContent = isPlaying ? "⏸" : "▶";
+		const img = this.btnPlay.querySelector("img") as HTMLImageElement;
+		if (img) img.src = isPlaying ? "icons/pause.svg" : "icons/play.svg";
 	}
 
 	updateProgress(current: number, duration: number): void {
@@ -473,6 +513,21 @@ class UIController {
 	
 	updateDownloadLink(url: string): void { 
 		this.btnDownload.href = url; 
+	}
+	
+	updateVolumeIcon(volume: number, isMuted: boolean): void {
+		const img = this.btnMute.querySelector("img") as HTMLImageElement;
+		if (!img) return;
+
+		if (isMuted) {
+			img.src = "icons/mute.svg";
+		} else if (volume === 0) {
+			img.src = "icons/volume_off.svg";
+		} else if (volume < 0.4) {
+			img.src = "icons/volume_down.svg";
+		} else {
+			img.src = "icons/volume_up.svg";
+		}
 	}
 	
 	closeSidebarOnMobile(): void {

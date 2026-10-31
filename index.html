@@ -9,8 +9,8 @@
 	</head>
 	<body>
 		<header id="topbar">
-			<button id="burger-btn">☰</button>
-			<button id="lang-switch">🌐 EN / AR</button>
+			<button class="icon-btn" id="burger-btn"><img src="icons/menu.svg" alt="Menu"></button>
+			<button class="icon-btn" id="lang-switch"><img src="icons/language.svg" alt="Lang"></button>
 		</header>
 		
 		<aside id="sidebar">
@@ -35,23 +35,21 @@
 				<span id="player-title">No current playback</span>
 			</div>
 			<div id="player-controls">
-				<button id="btn-repeat">🔁</button>
-				<button id="btn-prev">⏮</button>
-				<button id="btn-rewind">⏪ 5s</button>
-				<button id="btn-play">▶</button>
-				<button id="btn-forward">⏩ 5s</button>
-				<button id="btn-next">⏭</button>
-				<button id="btn-stop">⏹</button>
+				<button class="icon-btn" id="btn-repeat"><img src="icons/repeat_off.svg" alt="Repeat"></button>
+				<button class="icon-btn" id="btn-prev"><img src="icons/skip_left.svg" alt="Previous"></button>
+				<button class="icon-btn" id="btn-rewind"><img src="icons/seek_left.svg" alt="Rewind"></button>
+				<button class="icon-btn" id="btn-play"><img src="icons/play.svg" alt="Play"></button>
+				<button class="icon-btn" id="btn-forward"><img src="icons/seek_right.svg" alt="Forward"></button>
+				<button class="icon-btn" id="btn-next"><img src="icons/skip_right.svg" alt="Next"></button>
+				<button class="icon-btn" id="btn-stop"><img src="icons/stop.svg" alt="Stop"></button>
 			</div>
 			<div id="player-settings">
-				🔊 <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1">
-				<select id="speed-select">
-					<option value="0.75">0.75x</option>
-					<option value="1" selected>1x</option>
-					<option value="1.25">1.25x</option>
-					<option value="1.5">1.5x</option>
-				</select>
-				<a id="btn-download" download>⬇️</a>
+				<button id="btn-mute" class="icon-btn"><img src="icons/volume_up.svg" alt="Mute"></button>
+				<input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1">
+				<button class="icon-btn" id="btn-speed"><img src="icons/speed_1x.svg" alt="Speed 1x"></button>
+				<a id="btn-download" class="icon-btn" target="_blank" rel="noopener noreferrer" download>
+					<img src="icons/download.svg" alt="Download">
+				</a>
 			</div>
 			<audio id="global-audio"></audio>
 		</div>
