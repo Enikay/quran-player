@@ -321,8 +321,14 @@ class UIController {
 		this.btnStop.addEventListener("click", () => this.app.audio.stop());
 		this.btnPrev.addEventListener("click", () => this.app.audio.playPrev());
 		this.btnNext.addEventListener("click", () => this.app.audio.playNext());
-		this.btnRewind.addEventListener("click", () => this.app.audio.seekRelative(-SEEK_STEP));
-		this.btnForward.addEventListener("click", () => this.app.audio.seekRelative(SEEK_STEP));
+		this.btnRewind.addEventListener("click", () => {
+			this.app.audio.seekRelative(-SEEK_STEP);
+			this.updateProgress(this.app.audio.audio.currentTime, this.app.audio.audio.duration);
+		});
+		this.btnForward.addEventListener("click", () => {
+			this.app.audio.seekRelative(SEEK_STEP);
+			this.updateProgress(this.app.audio.audio.currentTime, this.app.audio.audio.duration);
+		});
 		
 		this.btnRepeat.addEventListener("click", () => {
 			const mode = this.app.audio.toggleRepeat();
