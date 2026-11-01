@@ -426,9 +426,13 @@ class UIController {
 			if (!track) return;
 
 			const div = document.createElement("div");
-			div.className = "surah";
+			div.className = "surah unavailable";
 			div.dataset.index = index.toString();
-			div.onclick = () => this.app.audio.play(index, reciter, activePlaylist);
+			div.onclick = () => {
+				if (!track.isUnavailable) {
+					this.app.audio.play(index, reciter, activePlaylist);
+				}
+			};
 
 			const idSpan = document.createElement("span");
 			idSpan.className = "surah-id";
@@ -449,6 +453,8 @@ class UIController {
 			
 			hiddenAudio.addEventListener("loadedmetadata", () => {
 				durationSpan.textContent = this.formatTime(hiddenAudio.duration);
+				div.classList.remove("unavailable");
+				track.isUnavailable = false;
 			});
 			
 			hiddenAudio.onerror = () => {
@@ -653,6 +659,11 @@ class QuranApp {
 	}
 
 	selectReciter(liElement: HTMLLIElement, reciter: Reciter): void {
+		if (this.activeReciter && this.activeReciter.path === reciter.path) {
+			this.ui.closeSidebarOnMobile();
+			return;
+		}
+
 		document.querySelectorAll("#reciters-list li").forEach(el => el.classList.remove("active"));
 		liElement.classList.add("active");
 		this.ui.closeSidebarOnMobile();
@@ -660,7 +671,8 @@ class QuranApp {
 		this.activeReciter = reciter;
 		const playlist: Track[] = this.suwarData.en.map((_, i) => ({
 			index: i,
-			url: `${reciter.path}/${String(i + 1).padStart(3, '0')}.mp3`
+			url: `${reciter.path}/${String(i + 1).padStart(3, '0')}.mp3`,
+			isUnavailable: true
 		}));
 		
 		this.ui.renderSuwar(reciter, this.suwarData.en, playlist);
