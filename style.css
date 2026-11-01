@@ -189,6 +189,21 @@ li.active {
 	width: 100%;
 }
 
+#time-current,
+#time-total {
+    font-variant-numeric: tabular-nums;
+}
+
+#time-current {
+    min-width: 55px;
+    text-align: end;
+}
+
+#time-total {
+    min-width: 55px;
+    text-align: start;
+}
+
 #player-info {
 	grid-area: info;
 }
