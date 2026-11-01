@@ -67,7 +67,10 @@ class AudioEngine {
 			this.playNext();
 		});
 
-		this.audio.addEventListener("loadedmetadata", () => this.updateMediaSessionPosition());
+		this.audio.addEventListener("loadedmetadata", () => {
+			this.updateMediaSessionPosition();
+			this.app.ui.updateTimeTotal();
+		});
 		this.audio.addEventListener("seeked", () => this.updateMediaSessionPosition());
 		this.audio.addEventListener("ratechange", () => this.updateMediaSessionPosition());
 
@@ -86,7 +89,7 @@ class AudioEngine {
 
 	startProgressLoop(): void {
 		const loop = () => {
-			this.app.ui.updateProgress(this.audio.currentTime, this.audio.duration);
+			this.app.ui.updateProgress();
 			this.animationFrame = requestAnimationFrame(loop);
 		};
 		this.animationFrame = requestAnimationFrame(loop);
@@ -323,11 +326,11 @@ class UIController {
 		this.btnNext.addEventListener("click", () => this.app.audio.playNext());
 		this.btnRewind.addEventListener("click", () => {
 			this.app.audio.seekRelative(-SEEK_STEP);
-			this.updateProgress(this.app.audio.audio.currentTime, this.app.audio.audio.duration);
+			this.updateProgress();
 		});
 		this.btnForward.addEventListener("click", () => {
 			this.app.audio.seekRelative(SEEK_STEP);
-			this.updateProgress(this.app.audio.audio.currentTime, this.app.audio.audio.duration);
+			this.updateProgress();
 		});
 		
 		this.btnRepeat.addEventListener("click", () => {
@@ -339,7 +342,7 @@ class UIController {
 
 		this.timeTotal.addEventListener("click", () => {
 			this.showRemainingTime = !this.showRemainingTime;
-			this.updateProgress(this.app.audio.audio.currentTime, this.app.audio.audio.duration);
+			this.updateTimeTotal();
 		});
 
 		this.seekBar.addEventListener("mousedown", () => this.isDragging = true);
@@ -536,11 +539,25 @@ class UIController {
 		this.btnPlay.title = isPlaying ? "Pause" : "Play";
 	}
 
-	updateProgress(current: number, duration: number): void {
+	updateProgress(): void {
+		const current = this.app.audio.audio.currentTime;
+		const duration = this.app.audio.audio.duration;
+
 		if (isNaN(duration) || this.isDragging) return;
 		
 		this.seekBar.value = ((current / duration) * 100).toString();
 		this.timeCurrent.textContent = this.formatTime(current);
+		if (this.showRemainingTime) {
+			this.timeTotal.textContent = "-" + this.formatTime(duration - current);
+		}
+	}
+
+	updateTimeTotal(): void {
+		const current = this.app.audio.audio.currentTime;
+		const duration = this.app.audio.audio.duration;
+
+		if (isNaN(duration)) return;
+
 		this.timeTotal.textContent = this.showRemainingTime 
 			? "-" + this.formatTime(duration - current) 
 			: this.formatTime(duration);
