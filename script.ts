@@ -426,7 +426,15 @@ class UIController {
 			if (!track) return;
 
 			const div = document.createElement("div");
-			div.className = "surah unavailable";
+			const isCurrentlyPlaying = this.app.audio.reciter?.path === reciter.path && this.app.audio.currentIndex === index;
+			
+			if (isCurrentlyPlaying) {
+				div.className = "surah playing";
+				track.isUnavailable = false;
+			} else {
+				div.className = "surah unavailable";
+			}
+			
 			div.dataset.index = index.toString();
 			div.onclick = () => {
 				if (!track.isUnavailable) {
@@ -445,6 +453,10 @@ class UIController {
 
 			const durationSpan = document.createElement("span");
 			durationSpan.className = "surah-duration";
+			
+			if (isCurrentlyPlaying) {
+				durationSpan.textContent = this.formatTime(this.app.audio.audio.duration);
+			}
 
 			const hiddenAudio = document.createElement("audio");
 			hiddenAudio.className = "hidden-audio";
@@ -573,10 +585,22 @@ class UIController {
 	}
 
 	resetProgress(): void {
-        this.seekBar.value = "0";
-        this.timeCurrent.textContent = "00:00";
-        this.timeTotal.textContent = "00:00";
-    }
+		this.seekBar.value = "0";
+		this.timeCurrent.textContent = "00:00";
+		
+		let totalTimeStr = "00:00";
+		
+		if (this.app.activeReciter?.path === this.app.audio.reciter?.path) {
+			const surahDiv = document.querySelector(`.surah[data-index="${this.app.audio.currentIndex}"]`);
+			const durationText = surahDiv?.querySelector(".surah-duration")?.textContent;
+			
+			if (durationText) {
+				totalTimeStr = durationText;
+			}
+		}
+		
+		this.timeTotal.textContent = totalTimeStr;
+	}
 
 	showPlayer(): void { 
 		this.playerBar.style.display = 'grid';
