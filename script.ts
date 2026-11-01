@@ -70,6 +70,7 @@ class AudioEngine {
 		this.audio.addEventListener("loadedmetadata", () => {
 			this.updateMediaSessionPosition();
 			this.app.ui.updateTimeTotal();
+			this.app.ui.updateProgress();
 		});
 		this.audio.addEventListener("seeked", () => this.updateMediaSessionPosition());
 		this.audio.addEventListener("ratechange", () => this.updateMediaSessionPosition());
@@ -106,6 +107,8 @@ class AudioEngine {
 
 		const track = this.playlist[this.currentIndex];
 		if (!track) return;
+
+		this.app.ui.resetProgress();
 
 		this.audio.src = track.url;
 		this.audio.play();
@@ -562,6 +565,12 @@ class UIController {
 			? "-" + this.formatTime(duration - current) 
 			: this.formatTime(duration);
 	}
+
+	resetProgress(): void {
+        this.seekBar.value = "0";
+        this.timeCurrent.textContent = "00:00";
+        this.timeTotal.textContent = "00:00";
+    }
 
 	showPlayer(): void { 
 		this.playerBar.style.display = 'grid';
