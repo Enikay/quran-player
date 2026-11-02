@@ -549,7 +549,7 @@ class UIController {
 
 	highlightPlayingSurah(index: number, playingReciter: Reciter | null): void {
 		document.querySelectorAll(".surah").forEach(div => div.classList.remove("playing"));
-		if (this.app.activeReciter === playingReciter && index !== -1) {
+		if (this.app.activeReciter?.path === playingReciter?.path && index !== -1) {
 			const activeDiv = document.querySelector(`.surah[data-index="${index}"]`);
 			if (activeDiv) activeDiv.classList.add("playing");
 		}
@@ -591,14 +591,15 @@ class UIController {
 	resetProgress(): void {
 		this.seekBar.value = "0";
 		this.timeCurrent.textContent = "00:00";
-		this.timeTotal.textContent = "00:00";
+		let prefix = this.showRemainingTime ? "-" : "";
+		this.timeTotal.textContent = prefix + "00:00";
 		
 		if (this.app.activeReciter?.path === this.app.audio.reciter?.path) {
 			const surahDiv = document.querySelector(`.surah[data-index="${this.app.audio.currentIndex}"]`);
 			const durationText = surahDiv?.querySelector(".surah-duration")?.textContent;
 			
 			if (durationText) {
-				this.timeTotal.textContent = durationText;
+				this.timeTotal.textContent = prefix + durationText;
 			}
 		}
 	}
