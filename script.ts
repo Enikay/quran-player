@@ -571,7 +571,7 @@ class UIController {
 		
 		this.seekBar.value = ((current / duration) * 100).toString();
 		this.timeCurrent.textContent = this.formatTime(current);
-		
+
 		if (this.showRemainingTime) {
 			this.timeTotal.textContent = "-" + this.formatTime(duration - current);
 		}
@@ -591,19 +591,16 @@ class UIController {
 	resetProgress(): void {
 		this.seekBar.value = "0";
 		this.timeCurrent.textContent = "00:00";
-		
-		let totalTimeStr = "00:00";
+		this.timeTotal.textContent = "00:00";
 		
 		if (this.app.activeReciter?.path === this.app.audio.reciter?.path) {
 			const surahDiv = document.querySelector(`.surah[data-index="${this.app.audio.currentIndex}"]`);
 			const durationText = surahDiv?.querySelector(".surah-duration")?.textContent;
 			
 			if (durationText) {
-				totalTimeStr = durationText;
+				this.timeTotal.textContent = durationText;
 			}
 		}
-		
-		this.timeTotal.textContent = totalTimeStr;
 	}
 
 	showPlayer(): void { 
