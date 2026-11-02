@@ -298,6 +298,22 @@ li.active {
 	}
 }
 
+button:active {
+	background: #555;
+}
+
+.icon-btn:active {
+	background: #444;
+}
+
+li:active {
+	background: #4a4a4a;
+}
+
+.surah:active {
+	background: #3a3a3a;
+}
+
 @media (hover: hover) {
 	button:hover {
 		background: #444;
