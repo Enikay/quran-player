@@ -251,6 +251,7 @@ class UIController {
 	app: QuranApp;
 	showRemainingTime: boolean = false;
 	isDragging: boolean = false;
+	lastRenderedSecond: number = -1;
 
 	// Déclaration stricte des éléments du DOM
 	sidebar!: HTMLElement;
@@ -569,15 +570,19 @@ class UIController {
 
 		if (isNaN(duration)) return;
 		
-		const seekBar_value = ((current / duration) * 100).toString();
-		const timeCurrent_textContent = this.formatTime(current);
-
-		if (this.showRemainingTime) {
-			this.timeTotal.textContent = "-" + this.formatTime(duration - current);
-		}
+		this.seekBar.value = ((current / duration) * 100).toString();
 		
-		this.seekBar.value = seekBar_value;
-		this.timeCurrent.textContent = timeCurrent_textContent;
+		const currentSecond = Math.floor(current);
+
+		if (currentSecond !== this.lastRenderedSecond) {
+			this.timeCurrent.textContent = this.formatTime(current);
+
+			if (this.showRemainingTime) {
+				this.timeTotal.textContent = "-" + this.formatTime(duration - currentSecond);
+			}
+
+			this.lastRenderedSecond = currentSecond;
+		}
 	}
 
 	updateTimeTotal(): void {
