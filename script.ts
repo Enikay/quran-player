@@ -380,6 +380,7 @@ class UIController {
 			
 			const img = this.btnSpeed.querySelector("img") as HTMLImageElement;
 			if (img) img.src = `icons/speed_${speedStr}.svg`;
+			img.alt = `${newSpeed}x`;
 		});
 
 		document.addEventListener("click", (e: Event) => {
