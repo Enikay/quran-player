@@ -562,13 +562,16 @@ class UIController {
 	}
 
 	updateProgress(): void {
+		if (this.app.audio.audio.readyState === 0 || this.isDragging) return;
+
 		const current = this.app.audio.audio.currentTime;
 		const duration = this.app.audio.audio.duration;
 
-		if (isNaN(duration) || this.isDragging) return;
+		if (isNaN(duration)) return;
 		
 		this.seekBar.value = ((current / duration) * 100).toString();
 		this.timeCurrent.textContent = this.formatTime(current);
+		
 		if (this.showRemainingTime) {
 			this.timeTotal.textContent = "-" + this.formatTime(duration - current);
 		}
